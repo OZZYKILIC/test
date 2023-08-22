@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-                bat 'mvn -version'
+                bat '${mvn} -version'
             }
         }
         stage('Test') {
