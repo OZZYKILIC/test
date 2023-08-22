@@ -5,9 +5,6 @@ pipeline {
         stage('Build') {
             steps {
                 bat 'mvn compile'
-                if (currentBuild.currentResult == 'FAILURE') {
-                  step([$class: 'Mailer', notifyEveryUnstableBuild: true, recipients: "ozan.kilic@outlook.com", sendToIndividuals: true])
-                }
             }
         }
         stage('Test') {
@@ -20,5 +17,11 @@ pipeline {
                 echo 'Deploying....'
             }
         }
+    }
+
+    post {
+         failure {
+             mail bcc: '', body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", cc: '', charset: 'UTF-8', from: '', mimeType: 'text/html', replyTo: '', subject: "ERROR CI: Project name -> ${env.JOB_NAME}", to: "ozan-kilic@outlook.com";
+         }
     }
 }
